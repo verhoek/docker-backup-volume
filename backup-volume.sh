@@ -27,9 +27,9 @@ validateInput
 
 echo "> Backing up the docker-volume '${DOCKER_VOLUME}' to '${BACKUP_DIR}/${BACKUP_FILE}'"
 
-docker run --rm	\
+docker run --rm \
     -v ${DOCKER_VOLUME}:/backup-src \
-    -v ${BACKUP_DIR}:/backup-dest ${DOCKER_IMAGE} \
-    sh -c "cd /backup-src && tar -czvf ${BACKUP_FILE} * && mv ${BACKUP_FILE} /backup-dest"
+    ${DOCKER_IMAGE} \
+    tar -C /backup-src -zcf - ./ > ${BACKUP_DIR}/${BACKUP_FILE}
 
 echo "> Backup of docker-volume finished!"
