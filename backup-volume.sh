@@ -7,7 +7,7 @@
 
 DOCKER_VOLUME=$1
 BACKUP_DIR=$2
-BACKUP_FILE=${DOCKER_VOLUME}-backup-$(date +%d-%m-%y-%H.%M.%S).tar.gz
+BACKUP_FILE=$(date +%y%m%d-%H.%M.%S)-${DOCKER_VOLUME}-backup.tar.gz
 DOCKER_IMAGE=alpine
 
 function validateInput() {
@@ -25,11 +25,9 @@ function validateInput() {
 
 validateInput
 
-echo "> Backing up the docker-volume '${DOCKER_VOLUME}' to '${BACKUP_DIR}/${BACKUP_FILE}'"
+echo ". Backing up the docker-volume '${DOCKER_VOLUME}' to '${BACKUP_DIR}/${BACKUP_FILE}'"
 
 docker run --rm \
     -v ${DOCKER_VOLUME}:/backup-src \
     ${DOCKER_IMAGE} \
     tar -C /backup-src -zcf - ./ > ${BACKUP_DIR}/${BACKUP_FILE}
-
-echo "> Backup of docker-volume finished!"
